@@ -1,88 +1,146 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import './Hero.css';
 import heroImg from '../assests/sathis.jpeg';
 import logoImg from '../assests/LOGO.jpg.jpeg';
 
+const NAV_LINKS = ['Portfolio', 'Pricing', 'About', 'Contact'];
+
 const Hero = () => {
-  const scrollTo = (id) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+  const [menuOpen, setMenuOpen] = useState(false);
   const imgRef = useRef(null);
 
+  const scrollTo = (id) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    setMenuOpen(false);
+  };
+
+  // Parallax
   useEffect(() => {
-    const handleScroll = () => {
+    const onScroll = () => {
       if (imgRef.current) {
-        const y = window.scrollY;
-        imgRef.current.style.transform = `scale(1.08) translateY(${y * 0.25}px)`;
+        imgRef.current.style.transform =
+          `scale(1.06) translateY(${window.scrollY * 0.18}px)`;
       }
     };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
+
+  // Lock scroll when menu open
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [menuOpen]);
 
   return (
     <section id="hero" className="hero">
-      <div className="hero-image-wrap">
-        <div className="hero-image" ref={imgRef}>
-          <img
-            src={heroImg}
-            alt="Photographer at work"
-          />
-        </div>
-        <div className="hero-image-overlay"></div>
+
+      {/* ── FULL-BLEED PHOTO ── */}
+      <div className="hero-photo">
+        <img ref={imgRef} src={heroImg} alt="Photographer" />
+        <div className="hero-photo-vignette" />
       </div>
 
-      <div className="hero-topbar">
-        <div className="hero-logo">
-          <img src={logoImg} alt="576 Megapixels logo" className="hero-logo-img" />
-          <div className="hero-logo-text">
-            <span className="logo-name">576 MEGAPIXELS</span>
-            <span className="logo-sub">Photography</span>
+      {/* ── TOP NAV ── */}
+      <header className="hero-header">
+        <div className="hero-header-inner">
+          <div className="hero-brand">
+            <img src={logoImg} alt="576 Megapixels" className="hero-brand-logo" />
+            <div className="hero-brand-text">
+              <span className="hero-brand-name">576 MEGAPIXELS</span>
+              <span className="hero-brand-sub">Photography · Dindigul</span>
+            </div>
           </div>
+
+          {/* Desktop links */}
+          <nav className="hero-nav">
+            {NAV_LINKS.map(s => (
+              <button key={s} onClick={() => scrollTo(s.toLowerCase())} className="hero-nav-link">
+                {s}
+              </button>
+            ))}
+            <a href="/admin/login" className="hero-nav-admin">Admin</a>
+          </nav>
+
+          {/* Hamburger */}
+          <button
+            className={`hero-burger ${menuOpen ? 'open' : ''}`}
+            onClick={() => setMenuOpen(v => !v)}
+            aria-label="Menu"
+          >
+            <span /><span /><span />
+          </button>
         </div>
-        <div className="hero-nav-top">
-          {['Portfolio', 'Pricing', 'About', 'Contact'].map(s => (
-            <button key={s} onClick={() => scrollTo(s.toLowerCase())}>{s}</button>
+      </header>
+
+      {/* ── MOBILE DRAWER ── */}
+      <div className={`hero-drawer-bg ${menuOpen ? 'open' : ''}`} onClick={() => setMenuOpen(false)} />
+      <aside className={`hero-drawer ${menuOpen ? 'open' : ''}`}>
+        <div className="drawer-brand">
+          <img src={logoImg} alt="" className="drawer-logo" />
+          <span>576 MEGAPIXELS</span>
+        </div>
+        <nav className="drawer-nav">
+          {NAV_LINKS.map((s, i) => (
+            <button
+              key={s}
+              className="drawer-link"
+              style={{ animationDelay: `${i * 0.06}s` }}
+              onClick={() => scrollTo(s.toLowerCase())}
+            >
+              <span className="drawer-link-num">0{i+1}</span>
+              {s}
+            </button>
           ))}
-        </div>
-      </div>
+        </nav>
+        <a href="/admin/login" className="drawer-admin">Admin Login →</a>
+      </aside>
 
-      <div className="hero-content">
-        <div className="hero-text-block">
-          <p className="hero-eyebrow">
-            <span className="eyebrow-line"></span>
-            Dindigul
+      {/* ── HERO BODY ── */}
+      <div className="hero-body pt-5">
+        <div className="hero-body-inner">
+
+          {/* Tag line */}
+          <p className="hero-tag">
+            <span className="hero-tag-line" />
+            Dindigul, Tamil Nadu
           </p>
+
+          {/* Big title */}
           <h1 className="hero-title">
-            <span className="title-line line-1">Capturing</span>
-            <span className="title-line line-2"><em>Moments</em></span>
-            <span className="title-line line-3">That Last</span>
+            <span className="ht line-1">We</span>
+            <span className="ht line-2"><em>Capture</em></span>
+            <span className="ht line-3">Your Story</span>
           </h1>
-          <p className="hero-desc">Wedding · Baby Shower · Portrait · Engagement</p>
-          <div className="hero-cta">
-            <button className="btn-filled hero-btn" onClick={() => scrollTo('portfolio')}>
-              <span>View Portfolio</span>
+
+          {/* Services pill row */}
+          <div className="hero-services">
+            {['Wedding', 'Baby Shower', 'Portrait', 'Engagement'].map(s => (
+              <span key={s} className="hero-service-pill">{s}</span>
+            ))}
+          </div>
+
+          <div className="hero-actions">
+            <button className="btn-dark" onClick={() => scrollTo('portfolio')}>
+              View Portfolio
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
             </button>
-            <button className="btn-primary hero-btn" onClick={() => scrollTo('contact')}>
-              <span>Book a Session</span>
+            <button className="btn-outline" onClick={() => scrollTo('contact')}>
+              Book a Session
             </button>
           </div>
         </div>
       </div>
 
-      {/* <div className="hero-stats">
-        {[['500+', 'Sessions'], ['8+', 'Years'], ['50+', 'Awards'], ['100%', 'Satisfied']].map(([n, l]) => (
-          <div key={l} className="hero-stat">
-            <span className="stat-num">{n}</span>
-            <span className="stat-label">{l}</span>
-          </div>
-        ))}
-      </div> */}
 
-      <div className="hero-scroll-wrap" onClick={() => scrollTo('portfolio')}>
-        <div className="scroll-track">
-          <div className="scroll-thumb"></div>
-        </div>
+      {/* ── SCROLL CUE ── */}
+      <div className="hero-scroll" onClick={() => scrollTo('portfolio')}>
+        <div className="hs-track"><div className="hs-dot" /></div>
         <span>Scroll</span>
       </div>
+
     </section>
   );
 };
