@@ -4,6 +4,7 @@ import toast from 'react-hot-toast';
 import './AdminPhotos.css';
 
 const CATEGORIES = ['Wedding', 'Baby Shower', 'Portrait', 'Engagement', 'Birthday', 'Corporate', 'Other'];
+const MAX_UPLOAD_SIZE = 4 * 1024 * 1024;
 
 const AdminPhotos = () => {
   const [photos, setPhotos] = useState([]);
@@ -32,6 +33,11 @@ const AdminPhotos = () => {
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
+    if (file.size > MAX_UPLOAD_SIZE) {
+      toast.error('Photo must be 4MB or smaller on the deployed site');
+      e.target.value = '';
+      return;
+    }
     setSelectedFile(file);
     const reader = new FileReader();
     reader.onload = () => setPreview(reader.result);
@@ -213,7 +219,7 @@ const AdminPhotos = () => {
                       </svg>
                     </div>
                     <p>Click to select photo</p>
-                    <small>JPG, PNG, WEBP up to 25MB</small>
+                    <small>JPG, PNG, WEBP up to 4MB</small>
                   </div>
                 )}
                 <input
