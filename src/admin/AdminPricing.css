@@ -1,0 +1,115 @@
+.admin-pricing {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.pricing-admin-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.pricing-admin-card {
+  background: #fff;
+  border: 1px solid #ece7df;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.pricing-admin-card.highlighted {
+  border-color: #111;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
+}
+
+.pricing-admin-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.pricing-admin-top h3 {
+  margin: 0 0 0.35rem;
+  font-size: 1.2rem;
+}
+
+.pricing-admin-price {
+  margin: 0;
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+
+.pricing-admin-duration {
+  margin: 0.35rem 0 0;
+  color: #777;
+}
+
+.pricing-flag {
+  align-self: flex-start;
+  background: #111;
+  color: #fff;
+  padding: 0.35rem 0.6rem;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.pricing-admin-features {
+  margin: 0;
+  padding-left: 1rem;
+  color: #444;
+  line-height: 1.8;
+}
+
+.pricing-admin-meta {
+  color: #777;
+  font-size: 0.85rem;
+}
+
+.pricing-admin-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: auto;
+}
+
+.btn-danger {
+  border: 1px solid #c66;
+  background: transparent;
+  color: #a33;
+  padding: 0.8rem 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.72rem;
+  cursor: pointer;
+}
+
+.btn-danger:hover {
+  background: #a33;
+  color: #fff;
+}
+
+.pricing-modal {
+  max-width: 760px;
+}
+
+.pricing-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.pricing-form textarea,
+.pricing-form input {
+  width: 100%;
+}
+
+.form-help {
+  color: #777;
+  font-size: 0.8rem;
+}
+
+.pricing-toggle {
+  margin-top: -0.25rem;
+}
